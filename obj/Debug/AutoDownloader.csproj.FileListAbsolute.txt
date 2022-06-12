@@ -1,0 +1,11 @@
+G:\My Drive\C# Projects\AutoDownloader\bin\Debug\AutoDownloader.exe.config
+G:\My Drive\C# Projects\AutoDownloader\bin\Debug\AutoDownloader.exe
+G:\My Drive\C# Projects\AutoDownloader\bin\Debug\AutoDownloader.pdb
+G:\My Drive\C# Projects\AutoDownloader\obj\Debug\AutoDownloader.csproj.AssemblyReference.cache
+G:\My Drive\C# Projects\AutoDownloader\obj\Debug\AutoDownloader.csproj.SuggestedBindingRedirects.cache
+G:\My Drive\C# Projects\AutoDownloader\obj\Debug\AutoDownloader.Form1.resources
+G:\My Drive\C# Projects\AutoDownloader\obj\Debug\AutoDownloader.Properties.Resources.resources
+G:\My Drive\C# Projects\AutoDownloader\obj\Debug\AutoDownloader.csproj.GenerateResource.cache
+G:\My Drive\C# Projects\AutoDownloader\obj\Debug\AutoDownloader.csproj.CoreCompileInputs.cache
+G:\My Drive\C# Projects\AutoDownloader\obj\Debug\AutoDownloader.exe
+G:\My Drive\C# Projects\AutoDownloader\obj\Debug\AutoDownloader.pdb
