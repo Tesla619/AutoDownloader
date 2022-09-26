@@ -76,4 +76,16 @@ if not os.path.exists(pickle_filepath):
 else:
     with open(pickle_filepath) as pickle_handle:
         result = pickle.load(pickle_handle)
+        
+        
+Basic Example:
+import pickle
+
+variable = "Hi"
+
+#Save the variable
+pickle.dump(variable, open("variableStoringFile.dat", "wb"))
+            
+#Load the variable
+variable = pickle.load(open("variableStoringFile.dat", "rb"))
 """
