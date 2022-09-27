@@ -1,0 +1,26 @@
+Ideas:
+
+1) Make show and episodes in a 2 arrays (maybe 2D, most likley would be wasteful)
+
+
+Commands for Later:
+
+anime1 = "https://9anime.tube/watch/detective-conan/"
+anime2 = "https://9anime.tube/watch/boruto-naruto-next-generations/"
+anime3 = "https://9anime.tube/watch/one-piece-episode-of-merry-mou-hitori-no-nakama-no-monogatari/"
+anime4 = "https://9anime.tube/watch/pokemon-2019/"
+
+pickle_path1 = "Episodes/conan.pickle"
+pickle_path2 = "Episodes/boruto.pickle"
+pickle_path3 = "Episodes/one_piece.pickle"
+pickle_path4 = "Episodes/pokemon.pickle"
+
+epCount1 = 1058 + 2 # +2 cause fuck up from 9anime naming
+epCount2 =  269
+epCount3 = 1035
+epCount4 =  127
+
+pickle.dump(epCount1, open(pickle_path1, "wb"))    
+pickle.dump(epCount2, open(pickle_path2, "wb"))    
+pickle.dump(epCount3, open(pickle_path3, "wb"))   
+pickle.dump(epCount4, open(pickle_path4, "wb"))
