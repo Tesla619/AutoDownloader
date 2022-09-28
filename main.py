@@ -36,6 +36,19 @@ def isProcOpen(processName):
             pass
     return False
 
+def chooseQuality(): #try make it use computer vision to determine which button is the highest res
+    try:
+        delay_click("//*[@id=\"container\"]/div/table/tbody/tr[3]/td[1]/a", 0.5) #high res #change to normal xpath not full for red
+        fail = False            
+    except: fail = True
+
+    if fail == True:
+        try:
+            delay_click("//*[@id=\"container\"]/div/table/tbody/tr[2]/td[1]/a", 0.5) #change to normal xpath not full for red
+            fail = False
+        except: pass
+            
+
 def download(url,ep):
     driver.execute_script('''window.open(" '''+ url + EPLINK + str(ep) + '''","_blank");''')
     time.sleep(0.2)
@@ -45,47 +58,41 @@ def download(url,ep):
     delay_click("//*[@id=\"player\"]", 0.2)
     delay_click("//*[@id=\"player\"]", 0.2)
     delay_click("//*[@id=\"player\"]", 0.2)
-    
-
 
     #region Switch Frame & Press Download
     driver.switch_to.frame("iframe-embed")
     driver.switch_to.frame("external-embed")
-    delay_click("//*[@id=\"mediaplayer\"]/div[2]/div[13]/div[4]/div[2]/div[13]", 100) #change to normal xpath not full for red
+    delay_click("//*[@id=\"mediaplayer\"]/div[2]/div[13]/div[4]/div[2]/div[13]", 0.1) #change to normal xpath not full for red
     
     #region Going to process to download video
     driver.switch_to.window(driver.window_handles[-1]) #last tab also check if reduntant
-    
-    #Choose Quality Button <--- put here chooseQuality();
+        
+    chooseQuality()
     
     try:
-        ChromeClick("//*[@id=\"F1\"]/button", 1000);
-        
-            except: (Exception)
-            
-                fail = True
-            
+        delay_click("//*[@id=\"F1\"]/button", 1)        
+    except: fail = True            
 
-            if (fail == True) #might switch flase firtst then true
-            {
-                chooseQuality();
-            }
-            else
-            {
-                try
-                {
-                    ChromeClick("//*[@id=\"F1\"]/button", 1000);
-                }
-                catch (Exception) { }
-            }
+    if fail == True: #try implementing else from exception instead of this bool     //might switch flase firtst then true 
+        chooseQuality()        
+    else:
+        try:
+            delay_click("//*[@id=\"F1\"]/button", 1)                
+        except: pass
 
-            IList<IWebElement> elements = Driver.FindElements(By.TagName("div"));
-            ReadOnlyCollection<IWebElement> link = elements[8].FindElements(By.TagName("a"));
-
-            Driver.Navigate().GoToUrl(link[0].GetAttribute("href"));
-            #endregion
+    #--------------------------------Translate This to Python--------------------------------
+    #IList<IWebElement> elements = Driver.FindElements(By.TagName("div"));
+    #ReadOnlyCollection<IWebElement> link = elements[8].FindElements(By.TagName("a"));
+    #Driver.Navigate().GoToUrl(link[0].GetAttribute("href"));
     
-       
+    
+    driver.find_elements("tag name", "div") #save to list
+    
+    IList<IWebElement> elements = Driver.FindElements(By.TagName("div"));
+    
+    
+    ReadOnlyCollection<IWebElement> link = elements[8].FindElements(By.TagName("a"));    
+    driver.get(link[0].GetAttribute("href"))
 
 def main():        
     if os.path.exists(pickle_path):        
@@ -95,10 +102,8 @@ def main():
         #find the latest episode by incrementing for 1 till get error page doesn't exit than save number
         #pickle.dump(epCount, open(pickle_path, "wb"))    
     
-    print(isProcOpen("chrome.exe"))
-    
-    if not isProcOpen("chrome.exe"):
-        driver.get(test) # FILLER    
+    if not isProcOpen("chrome.exe"): #OR use it to close previouse chrome window since downloads are in different days
+        driver.get(test) # FILLER    #might need to do it each time since scipt will run each time         
     else: pass
         
     download(test, epCount)   
