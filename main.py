@@ -41,13 +41,12 @@ def chooseQuality(): #try make it use computer vision to determine which button 
         delay_click("//*[@id=\"container\"]/div/table/tbody/tr[3]/td[1]/a", 0.5) #high res #change to normal xpath not full for red
         fail = False            
     except: fail = True
-
+        
     if fail == True:
         try:
             delay_click("//*[@id=\"container\"]/div/table/tbody/tr[2]/td[1]/a", 0.5) #change to normal xpath not full for red
             fail = False
-        except: pass
-            
+        except: pass            
 
 def download(url,ep):
     driver.execute_script('''window.open(" '''+ url + EPLINK + str(ep) + '''","_blank");''')
@@ -59,40 +58,31 @@ def download(url,ep):
     delay_click("//*[@id=\"player\"]", 0.2)
     delay_click("//*[@id=\"player\"]", 0.2)
 
-    #region Switch Frame & Press Download
+    #Switch Frame & Press Download
     driver.switch_to.frame("iframe-embed")
     driver.switch_to.frame("external-embed")
     delay_click("//*[@id=\"mediaplayer\"]/div[2]/div[13]/div[4]/div[2]/div[13]", 0.1) #change to normal xpath not full for red
     
-    #region Going to process to download video
+    #Going to process to download video
     driver.switch_to.window(driver.window_handles[-1]) #last tab also check if reduntant
         
-    chooseQuality()
+    chooseQuality() #selecting the link for the best resolution video
     
     try:
         delay_click("//*[@id=\"F1\"]/button", 1)        
     except: fail = True            
-
+    
     if fail == True: #try implementing else from exception instead of this bool     //might switch flase firtst then true 
         chooseQuality()        
     else:
         try:
             delay_click("//*[@id=\"F1\"]/button", 1)                
         except: pass
-
-    #--------------------------------Translate This to Python--------------------------------
-    #IList<IWebElement> elements = Driver.FindElements(By.TagName("div"));
-    #ReadOnlyCollection<IWebElement> link = elements[8].FindElements(By.TagName("a"));
-    #Driver.Navigate().GoToUrl(link[0].GetAttribute("href"));
-    
-    
-    driver.find_elements("tag name", "div") #save to list
-    
-    IList<IWebElement> elements = Driver.FindElements(By.TagName("div"));
-    
-    
-    ReadOnlyCollection<IWebElement> link = elements[8].FindElements(By.TagName("a"));    
-    driver.get(link[0].GetAttribute("href"))
+        
+    #Finding the link and loading it to download the video
+    elements = driver.find_elements("tag name", "div")
+    link = elements[8].find_elements("tag name", "a")
+    driver.get(link[0].get_attribute("href"))
 
 def main():        
     if os.path.exists(pickle_path):        
