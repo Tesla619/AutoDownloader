@@ -7,6 +7,10 @@ from selenium.webdriver.chrome.options import Options
 from selenium.webdriver.chrome.service import Service
 from webdriver_manager.chrome import ChromeDriverManager
 
+#Check on these pip commands
+#pip install selenium
+#pip install webdriver_manager
+
 chrome_options = Options()
 chrome_options.add_extension("uBlock-Origin.crx")
 chrome_options.add_experimental_option('excludeSwitches', ['enable-logging']) #To Stop show USB backend error
