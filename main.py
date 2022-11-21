@@ -3,6 +3,7 @@ import time
 import pickle
 import psutil
 from selenium import webdriver
+from pathlib import Path
 from selenium.webdriver.chrome.options import Options
 from selenium.webdriver.chrome.service import Service
 from webdriver_manager.chrome import ChromeDriverManager
@@ -11,8 +12,11 @@ from webdriver_manager.chrome import ChromeDriverManager
 #pip install selenium
 #pip install webdriver_manager
 
+source_path = Path(__file__).resolve()
+source_dir = str(source_path.parent) + "\\"
+
 chrome_options = Options()
-chrome_options.add_extension("uBlock-Origin.crx")
+chrome_options.add_extension(source_dir + "uBlock-Origin.crx")
 chrome_options.add_experimental_option('excludeSwitches', ['enable-logging']) #To Stop show USB backend error
 
 #taskkill /IM chromedriver.exe /F
@@ -21,10 +25,10 @@ driver = webdriver.Chrome(service=Service(ChromeDriverManager(path = "Drivers").
 fail = False
 
 EPLINK = "?ep="
-epCount = 1058 + 2
-pickle_path = "Episodes/conan.pickle"
-show = "https://9anime.tube/watch/detective-conan/"
+epCount = 1062 + 2
+pickle_path = source_dir + "Episodes\conan.pickle"
 
+show = "https://9anime.tube/watch/detective-conan/"
 test = "https://www.google.com"
     
 def delay_click(xpath, delay):
@@ -54,8 +58,13 @@ def chooseQuality(): #try make it use computer vision to determine which button 
 
 def download(url,ep):
     driver.execute_script('''window.open(" '''+ url + EPLINK + str(ep) + '''","_blank");''')
-    time.sleep(0.2)
+    time.sleep(10) #was 0.2
     
+    ###################Research Here###################
+    #https://www.google.com/search?q=NoSuchElementException%3A+Message%3A+no+such+element%3A+Unable+to+locate+element%3A+%7B%22method%22%3A%22xpath%22&sxsrf=ALiCzsYn087VLTZiD45F4pJsO--bPVcZSg%3A1669065292960&ei=TOp7Y4iAOquMi-gPt6efkA0&ved=0ahUKEwiI1pLfmMD7AhUrxgIHHbfTB9IQ4dUDCA8&uact=5&oq=NoSuchElementException%3A+Message%3A+no+such+element%3A+Unable+to+locate+element%3A+%7B%22method%22%3A%22xpath%22&gs_lcp=Cgxnd3Mtd2l6LXNlcnAQAzIFCAAQgAQyBAgAEB5KBAhBGAFKBAhGGABQrwdY8TdgvDpoAXAAeACAAXGIAbsFkgEDNy4xmAEAoAEBwAEB&sclient=gws-wiz-serp
+    ###################################################
+    
+    #Below is broken
     #Play & Pause Video
     delay_click("//*[@id=\"player\"]", 3)
     delay_click("//*[@id=\"player\"]", 0.2)
@@ -88,7 +97,7 @@ def download(url,ep):
     link = elements[8].find_elements("tag name", "a")
     driver.get(link[0].get_attribute("href"))
 
-def main():        
+def OLDmain():        
     if os.path.exists(pickle_path):        
         epCount = pickle.load(open(pickle_path, "rb"))
     else:
@@ -96,18 +105,27 @@ def main():
         #find the latest episode by incrementing for 1 till get error page doesn't exit than save number
         #pickle.dump(epCount, open(pickle_path, "wb"))    
     
+    
     if not isProcOpen("chrome.exe"): #OR use it to close previouse chrome window since downloads are in different days
         driver.get(test) # FILLER    #might need to do it each time since scipt will run each time         
     else: pass
         
-    download(test, epCount)   
+    download(show, epCount)   
 
-    time.sleep(1.5)
+    time.sleep(2)
 
     for tabs in driver.window_handles:        
         driver.switch_to.window(driver.window_handles[-1]) #last tab
         if len(driver.window_handles) > 1: #so to keep first opened tab open    #//Check if can close final tab after download is complete
             driver.close()
+            
+    time.sleep(30*60) #30mins * 60 seconds
     
+def main():
+    driver.execute_script('''window.open(" '''+ show + EPLINK + str(epCount) + '''","_blank");''')
+    time.sleep(10)
+
 if __name__ == "__main__": #might remove
-    main()
+    OLDmain()
+    
+#conda activate autodwonloader &python.exe d:/AutoDownloader/main.py
